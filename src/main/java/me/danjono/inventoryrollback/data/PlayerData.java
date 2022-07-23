@@ -228,6 +228,14 @@ public class PlayerData {
         }
     }
 
+    public void setPing(int ping){
+        if(ConfigData.getSaveType() == SaveType.YAML) {
+            yaml.setPing(ping);
+        } else if (ConfigData.getSaveType() == SaveType.MYSQL){
+            mysql.setPing(ping);
+        }
+    }
+
     public void setLogType(LogType logType) {
         if (ConfigData.getSaveType() == SaveType.YAML) {
             yaml.setLogType(logType);
@@ -389,6 +397,16 @@ public class PlayerData {
             return yaml.getZ();
         } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
             return mysql.getZ();
+        }
+
+        return 0;
+    }
+
+    public int getPing() {
+        if (ConfigData.getSaveType() == SaveType.YAML) {
+            return yaml.getPing();
+        } else if (ConfigData.getSaveType() == SaveType.MYSQL) {
+            return mysql.getPing();
         }
 
         return 0;

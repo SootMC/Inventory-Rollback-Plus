@@ -110,6 +110,9 @@ public class RollbackListMenu {
                 lore.add(MessageData.getDeathLocationY(y));
                 lore.add(MessageData.getDeathLocationZ(z));
 
+                int ping = playerData.getPing();
+                lore.add(MessageData.getPing(ping));
+
                 ItemStack item = buttons.createInventoryButton(new ItemStack(Material.CHEST), logType, location, timestamp, displayName, lore);
 
                 inventory.setItem(position, item);

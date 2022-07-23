@@ -41,6 +41,7 @@ public class YAML {
     private double x;
     private double y;
     private double z;
+    private int ping;
     private LogType logType;
     private String packageVersion;
     private String deathReason;
@@ -258,6 +259,8 @@ public class YAML {
         this.z = z;
     }
 
+    public void setPing(int ping) {this.ping = ping; }
+
     public void setLogType(LogType logType) {
         this.logType = logType;
     }
@@ -317,6 +320,8 @@ public class YAML {
         return data.getDouble("location.z");
     }
 
+    public int getPing() { return data.getInt("ping"); }
+
     public LogType getSaveType() {
         LogType logType = null;
 
@@ -349,6 +354,7 @@ public class YAML {
         data.set("location.x", x);
         data.set("location.y", y);
         data.set("location.z", z);
+        data.set("ping", ping);
         data.set("logType", logType.name());
         data.set("version", packageVersion);
         data.set("deathReason", deathReason);
@@ -430,6 +436,7 @@ public class YAML {
                         yaml.setX(data.getDouble("data." + timestamp + ".location.x"));
                         yaml.setY(data.getDouble("data." + timestamp + ".location.y"));
                         yaml.setZ(data.getDouble("data." + timestamp + ".location.z"));
+                        yaml.setPing(data.getInt("data." + timestamp + ".ping"));
 
                         String lt = data.getString("data." + timestamp + ".logType");
                         LogType logType = null;

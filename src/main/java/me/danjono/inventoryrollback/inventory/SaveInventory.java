@@ -16,6 +16,7 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.CompletableFuture;
 
 public class SaveInventory {
@@ -85,6 +86,22 @@ public class SaveInventory {
         double locY = ((int)(pLoc.getY() * 10)) / 10d;
         double locZ = ((int)(pLoc.getZ() * 10)) / 10d;
 
+        int p = 0;
+        try {
+            Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
+            p = (int) entityPlayer.getClass().getField("e").get(entityPlayer);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        int ping = p;
+
         // Final vars
         ItemStack[] finalMainInvContents = mainInvContents;
         ItemStack[] finalMainInvArmor = mainInvArmor;
@@ -107,6 +124,8 @@ public class SaveInventory {
             data.setX(locX);
             data.setY(locY);
             data.setZ(locZ);
+
+            data.setPing(ping);
 
             data.setLogType(logType);
             data.setVersion(InventoryRollback.getPackageVersion());
