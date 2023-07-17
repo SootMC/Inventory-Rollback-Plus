@@ -97,8 +97,8 @@ public class ConfigData {
     private static SimpleDateFormat timeFormat;
 
     private static boolean updateChecker;
-
     private static boolean bStatsEnabled;
+    private static boolean debugEnabled;
 
     public void setVariables() {		
         setEnabled((boolean) getDefaultValue("enabled", true));
@@ -145,6 +145,7 @@ public class ConfigData {
 
         setUpdateChecker((boolean) getDefaultValue("update-checker", true));
         setbStatsEnabled((boolean) getDefaultValue("bStats", true));
+        setDebugEnabled((boolean) getDefaultValue("debug", false));
 
         if (saveChanges())
             saveConfig();
@@ -238,10 +239,16 @@ public class ConfigData {
 
     public static void setTimeZone(String zone) {
         try {
+            // Allow UTC offsets
+            if (zone.length() > 3 && zone.startsWith("UTC")) {
+                zone = "GMT" + zone.substring(3);
+            }
+
             timeZone = TimeZone.getTimeZone(zone);
             timeZoneName = zone;
             timeZoneOffsetMillis = InventoryRollbackPlus.getInstance().getTimeZoneUtil().getMillisOffsetAtTimeZone(zone);
         } catch (IllegalArgumentException | NullPointerException ex) {
+            ex.printStackTrace();
             timeZoneOffsetMillis = 0L;
             InventoryRollback.getInstance().getLogger().log(Level.WARNING, ("Time zone \"" + zone + "\" in config.yml is invalid. Defaulting to \"UTC\""));
         }
@@ -262,6 +269,10 @@ public class ConfigData {
 
     public static void setbStatsEnabled(boolean enabled) {
         bStatsEnabled = enabled;
+    }
+
+    public static void setDebugEnabled(boolean enabled) {
+        debugEnabled = enabled;
     }
 
     public static boolean isEnabled() {
@@ -362,6 +373,10 @@ public class ConfigData {
 
     public static boolean isbStatsEnabled() {
         return bStatsEnabled;
+    }
+
+    public static boolean isDebugEnabled() {
+        return debugEnabled;
     }
 
     private boolean saveChanges = false;

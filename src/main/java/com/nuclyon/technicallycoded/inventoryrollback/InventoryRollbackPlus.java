@@ -47,9 +47,13 @@ public class InventoryRollbackPlus extends InventoryRollback {
         // Load Utils
         this.timeZoneUtil = new TimeZoneUtil();
 
+        // Load Config
+        configData = new ConfigData();
+        configData.setVariables(); // requires TimeZoneUtil
+
         // Init NMS
-        InventoryRollback.setPackageVersion(Bukkit.getServer().getClass().getPackage().getName()
-                .replace(".",  ",").split(",")[3]);
+        InventoryRollback.setPackageVersion(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
+        if (ConfigData.isDebugEnabled()) getLogger().info("Found NMS Package Version: " + getPackageVersion());
 
         if (!this.isCompatible()) {
             getLogger().warning(MessageData.getPluginPrefix() + "\n" +
@@ -228,5 +232,9 @@ public class InventoryRollbackPlus extends InventoryRollback {
 
     public TimeZoneUtil getTimeZoneUtil() {
         return this.timeZoneUtil;
+    }
+
+    public ConfigData getConfigData() {
+        return configData;
     }
 }
